@@ -1,5 +1,6 @@
 package com.hendisantika.controller;
 
+import com.hendisantika.model.Books;
 import com.hendisantika.service.KafkaPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +32,17 @@ public class KafkaController {
         this.kafkaPublisher = kafkaPublisher;
     }
 
-    @PostMapping(value = "publish")
+    @PostMapping(value = "/publish")
     public ResponseEntity<String> publishMessage(@RequestBody String message,
                                                  @RequestHeader(name = "topic-name") String topicName) {
         kafkaPublisher.publishMessage(message, topicName);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/books/publish")
+    public ResponseEntity<String> publishMessage(@RequestBody Books books,
+                                                 @RequestHeader(name = "topic-name") String topicName) {
+        kafkaPublisher.publishBooksUpdateMessage(books, topicName);
         return ResponseEntity.ok().build();
     }
 }
